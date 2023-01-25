@@ -39,10 +39,13 @@ Future attemptLogin(String username, String password) async {
   }
 }
 
-Future createAccount(String username, String password) async {
+Future createAccount(
+    String username, String password, String secondPassword) async {
   try {
     if (username.isEmpty || password.isEmpty) {
       throw ("Username or Password is empty");
+    } else if (password != secondPassword) {
+      throw ("Password doesn't match!");
     }
     var res = await http.post(
       Uri.parse(

@@ -10,6 +10,8 @@ class CreateAccountPage extends StatefulWidget {
 class _CreateAccountPage extends State<CreateAccountPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _secondPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +47,23 @@ class _CreateAccountPage extends State<CreateAccountPage> {
                 ),
               ),
             ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.all(10),
+              child: TextField(
+                controller: _secondPasswordController,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Confirm password',
+                ),
+              ),
+            ),
             ButtonBar(alignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () async {
-                  var a = await createAccount(
-                      _usernameController.text, _passwordController.text);
+                  var a = await createAccount(_usernameController.text,
+                      _passwordController.text, _secondPasswordController.text);
                   if (a == 0) {
                     Navigator.pop(context);
                   } else {
