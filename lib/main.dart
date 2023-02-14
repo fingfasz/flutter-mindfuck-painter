@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mindfuck_painter/screens/home_page.dart';
 import 'package:flutter_mindfuck_painter/screens/login_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:developer' as dev;
 
 final storage = FlutterSecureStorage();
 

@@ -24,11 +24,15 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context) => [
                 PopupMenuItem<int>(
                   value: 0,
+                  child: Text('Add Friend'),
+                ),
+                PopupMenuItem<int>(
+                  value: 1,
                   child: Text('Settings'),
                 ),
                 PopupMenuDivider(),
                 PopupMenuItem<int>(
-                  value: 1,
+                  value: 2,
                   child: Row(
                     children: [
                       Icon(
@@ -53,12 +57,19 @@ class _HomePageState extends State<HomePage> {
   void onSelected(BuildContext context, int item) async {
     switch (item) {
       case 0:
+        var snackBar = const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text("Still under development"));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        break;
+      case 1:
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => SettingsPage()),
         );
         break;
-      case 1:
+      case 2:
         await storage.delete(key: "token");
+        await storage.delete(key: "uuid");
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginPage()),
           (route) => false,

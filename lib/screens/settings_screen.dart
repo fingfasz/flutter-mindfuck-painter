@@ -14,6 +14,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   String? owo = storage.read(key: "token").toString();
+  String? uwu = storage.read(key: "uuid").toString();
 
   @override
   Widget build(BuildContext context) {
@@ -26,15 +27,22 @@ class _SettingsPageState extends State<SettingsPage> {
             child: Column(
           children: [
             Container(
-              child: Text(owo == null ? "Waiting..." : owo!),
+              child: Text(
+                  owo == "Instance of 'Future<String?>'" ? "Token here" : owo!),
+            ),
+            Container(
+              child: Text(
+                  owo == "Instance of 'Future<String?>'" ? "UUID here" : uwu!),
             ),
             ElevatedButton(
               onPressed: () async => await storage.deleteAll(),
-              child: Text("Delete token (and then restart)"),
+              child: Text("Reset storage (and then restart)"),
             ),
             ElevatedButton(
               onPressed: () async {
                 owo = await storage.read(key: "token");
+                uwu = await storage.read(key: "uuid");
+
                 setState(() {});
               },
               child: Text("Get token"),

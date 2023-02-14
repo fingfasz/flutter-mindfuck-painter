@@ -25,8 +25,10 @@ Future attemptLogin(String username, String password) async {
     Map<String, dynamic> map = jsonDecode(res.body);
     if (res.statusCode == 200) {
       // Login success
-      dev.log("Wrote token into storage");
+      dev.log("Writing token into storage...");
       storage.write(key: "token", value: map["token"]);
+      storage.write(key: "uuid", value: map["uuid"]);
+      dev.log("Wrote token into storage");
       return 0;
     } else {
       // Login fail
