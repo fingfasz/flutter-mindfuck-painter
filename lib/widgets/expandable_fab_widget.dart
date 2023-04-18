@@ -79,7 +79,8 @@ class _ExpandableFabState extends State<ExpandableFab>
       height: 56.0,
       child: Center(
         child: Material(
-          shape: const CircleBorder(),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           child: InkWell(
@@ -88,7 +89,7 @@ class _ExpandableFabState extends State<ExpandableFab>
               padding: const EdgeInsets.all(8.0),
               child: Icon(
                 Icons.close,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).secondaryHeaderColor,
               ),
             ),
           ),

@@ -67,47 +67,47 @@ class _SketchingPageState extends State<SketchingPage> {
         // title: Text(""),
         automaticallyImplyLeading: false,
         actions: [
-          PopupMenuButton<int>(
-            onSelected: (item) => onSelected(context, item),
-            itemBuilder: (context) => [
-              PopupMenuItem<int>(
-                value: 0,
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.color_lens,
-                    ),
-                    SizedBox(width: 8),
-                    Text('Change Color'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<int>(
-                value: 1,
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.drafts,
-                    ),
-                    SizedBox(width: 8),
-                    Text('Change Background Color'),
-                  ],
-                ),
-              ),
-              PopupMenuItem<int>(
-                value: 2,
-                child: Row(
-                  children: const [
-                    Icon(
-                      Icons.draw,
-                    ),
-                    SizedBox(width: 8),
-                    Text('Change Pen'),
-                  ],
-                ),
-              ),
-            ],
-          ),
+          // PopupMenuButton<int>(
+          //   onSelected: (item) => onSelected(context, item),
+          //   itemBuilder: (context) => [
+          //     PopupMenuItem<int>(
+          //       value: 0,
+          //       child: Row(
+          //         children: const [
+          //           Icon(
+          //             Icons.color_lens,
+          //           ),
+          //           SizedBox(width: 8),
+          //           Text('Change Color'),
+          //         ],
+          //       ),
+          //     ),
+          //     PopupMenuItem<int>(
+          //       value: 1,
+          //       child: Row(
+          //         children: const [
+          //           Icon(
+          //             Icons.drafts,
+          //           ),
+          //           SizedBox(width: 8),
+          //           Text('Change Background Color'),
+          //         ],
+          //       ),
+          //     ),
+          //     PopupMenuItem<int>(
+          //       value: 2,
+          //       child: Row(
+          //         children: const [
+          //           Icon(
+          //             Icons.draw,
+          //           ),
+          //           SizedBox(width: 8),
+          //           Text('Change Pen'),
+          //         ],
+          //       ),
+          //     ),
+          //   ],
+          // ),
           IconButton(
             icon: const Icon(Icons.send),
             tooltip: "Send your Sketch",
