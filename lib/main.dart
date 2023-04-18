@@ -3,6 +3,7 @@ import 'package:flutter_mindfuck_painter/screens/home_page.dart';
 import 'package:flutter_mindfuck_painter/screens/login_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+// ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
 
 bool? tokenExists;
@@ -21,8 +22,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mindfuck',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        brightness: Brightness.light,
+        colorSchemeSeed: Colors.deepPurple,
       ),
+      darkTheme: ThemeData(
+          useMaterial3: true,
+          brightness: Brightness.dark,
+          //colorSchemeSeed: Colors.purple,
+          backgroundColor: Color.fromARGB(255, 0, 0, 0)),
+      themeMode: ThemeMode.dark,
+      debugShowCheckedModeBanner: false,
       home: tokenExists! ? HomePage() : LoginPage(),
     );
   }

@@ -12,6 +12,7 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
+// TODO: Very temporary settings page; no actual settings yet
 class _SettingsPageState extends State<SettingsPage> {
   String? owo = storage.read(key: "token").toString();
   String? uwu = storage.read(key: "uuid").toString();
@@ -19,7 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        //backgroundColor: Colors.white,
         appBar: AppBar(
           title: const Text("Settings"),
         ),
@@ -46,6 +47,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {});
               },
               child: Text("Get token"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                var a = await getUserByUsername('test1');
+                log(a.toString());
+
+                setState(() {});
+              },
+              child: Text("Test Get User"),
             ),
           ],
         )));
