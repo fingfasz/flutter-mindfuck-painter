@@ -116,3 +116,12 @@ Future getUserByUuid(String uuid) async {
 
   return jsonDecode(res.body).user;
 }
+
+Future addUserAsFriend(String username) async {
+  String? token = await storage.read(key: "token");
+
+  if (token == null) {
+    // No token in storage
+    return -1;
+  }
+}
