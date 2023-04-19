@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mindfuck_painter/domain/services/api_service.dart';
+import 'package:flutter_mindfuck_painter/domain/services/api_service_user.dart';
+import 'package:flutter_mindfuck_painter/domain/services/error_popup_handler_service.dart';
 import 'package:flutter_mindfuck_painter/screens/create_account_page.dart';
 import 'package:flutter_mindfuck_painter/screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -52,26 +55,23 @@ class _LoginPageState extends State<LoginPage> {
               alignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(minimumSize: Size(100, 36)),
+                  style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(100, 36)),
                   onPressed: _isButtonDisabled
                       ? null
                       : () async {
                           setState(() => _isButtonDisabled = true);
                           var a = await attemptLogin(_usernameController.text,
                               _passwordController.text);
-
                           if (a == 0) {
                             Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomePage()),
+                                    builder: (context) => const HomePage()),
                                 (route) => false);
                           } else {
-                            var snackBar = SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text("Error: ${a.toString()}"));
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
+                            showErrorSnackbar(
+                                context, "Error: ${a.toString()}");
                           }
                           setState(() => _isButtonDisabled = false);
                         },
@@ -83,40 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => CreateAccountPage())),
+                          builder: (context) => const CreateAccountPage())),
                   child: const Text("Create Account"),
                 ),
               ],
             )
-            // SizedBox(
-            //     width: MediaQuery.of(context).size.width / 2.25,
-            //     height: 50,
-            //     child: Column(
-            //       children: [
-            //         ElevatedButton(
-            //           onPressed: _isButtonDisabled
-            //               ? null
-            //               : () async {
-            //                   _isButtonDisabled = true;
-            //                   await attemptLogin(_usernameController.text,
-            //                       _passwordController.text);
-            //                   _isButtonDisabled = false;
-            //                 },
-            //           child: Text(_isButtonDisabled ? "Hold on..." : "Log in"),
-            //         ),
-            //         ElevatedButton(
-            //           onPressed: _isButtonDisabled
-            //               ? null
-            //               : () async {
-            //                   _isButtonDisabled = true;
-            //                   await attemptLogin(_usernameController.text,
-            //                       _passwordController.text);
-            //                   _isButtonDisabled = false;
-            //                 },
-            //           child: Text(_isButtonDisabled ? "Hold on..." : "Log in"),
-            //         ),
-            //       ],
-            //     )),
           ],
         ),
       ),

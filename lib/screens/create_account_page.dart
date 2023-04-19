@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_mindfuck_painter/domain/services/api_service.dart';
+import 'package:flutter_mindfuck_painter/domain/services/api_service_user.dart';
+import 'package:flutter_mindfuck_painter/domain/services/error_popup_handler_service.dart';
 
 class CreateAccountPage extends StatefulWidget {
+  const CreateAccountPage({super.key});
+
   @override
   State<CreateAccountPage> createState() => _CreateAccountPage();
 }
@@ -67,13 +70,10 @@ class _CreateAccountPage extends State<CreateAccountPage> {
                   if (a == 0) {
                     Navigator.pop(context);
                   } else {
-                    var snackBar = SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text("Error: ${a.toString()}"));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    showErrorSnackbar(context, "Error: ${a.toString()}");
                   }
                 },
-                child: Text("Register"),
+                child: const Text("Register"),
               ),
             ]),
           ],
