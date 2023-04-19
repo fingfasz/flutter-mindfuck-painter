@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:developer' as dev;
 
+import 'package:flutter/material.dart';
 import 'package:flutter_mindfuck_painter/constants/api_constants.dart';
+import 'package:flutter_mindfuck_painter/screens/login_page.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,7 +16,7 @@ Future attemptLogin(String username, String password) async {
       throw ("Username or Password is empty");
     }
     var res = await http.post(
-      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.usersEndpoint}/login'),
+      Uri.parse(ApiConstants.users.loginEndpoint),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -27,6 +29,7 @@ Future attemptLogin(String username, String password) async {
     if (res.statusCode == 200) {
       // Login success
       dev.log("Writing token into storage...");
+      storage.write(key: "username", value: username);
       storage.write(key: "token", value: map["token"]);
       storage.write(key: "uuid", value: map["uuid"]);
       dev.log("Wrote token into storage");
@@ -51,8 +54,7 @@ Future createAccount(
       throw ("Password doesn't match!");
     }
     var res = await http.post(
-      Uri.parse(
-          '${ApiConstants.baseUrl}${ApiConstants.usersEndpoint}${ApiConstants.registerEndpoint}'),
+      Uri.parse(ApiConstants.users.registerEndpoint),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -84,7 +86,7 @@ Future getUserByUsername(String username) async {
   }
 
   var res = await http.get(
-    Uri.parse('${ApiConstants.baseUrl}${ApiConstants.usersEndpoint}/$username'),
+    Uri.parse(ApiConstants.users.getUserByUsernameEndpoint(username)),
     headers: <String, String>{
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json; charset=UTF-8',
@@ -101,13 +103,8 @@ Future getUserByUuid(String uuid) async {
     return -1;
   }
 
-  // final queryParameters = jsonEncode(<String, String>{
-  //   "token": token,
-  // });
-
   var res = await http.get(
-    Uri.parse(
-        '${ApiConstants.baseUrl}${ApiConstants.usersEndpoint}/uuid/$uuid'),
+    Uri.parse(ApiConstants.users.getUserByUuidEndpoint(uuid)),
     headers: <String, String>{
       'Authorization': token,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -124,4 +121,15 @@ Future addUserAsFriend(String username) async {
     // No token in storage
     return -1;
   }
+}
+
+Future logout(BuildContext context) async {
+  await storage.delete(key: "token");
+  await storage.delete(key: "uuid");
+  await storage.delete(key: "username");
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute(builder: (context) => const LoginPage()),
+    (route) => false,
+  );
+  return 0;
 }
