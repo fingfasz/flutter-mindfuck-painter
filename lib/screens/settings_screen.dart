@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mindfuck_painter/domain/services/api_service_user.dart';
 import 'package:flutter_mindfuck_painter/domain/services/error_popup_handler_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 
 import 'package:settings_ui/settings_ui.dart';
 
@@ -59,23 +60,24 @@ class _SettingsPageState extends State<SettingsPage> {
                       "No other language are supported at the moment - sorry!"),
                 ),
                 SettingsTile(
-                    leading: Icon(Icons.format_paint),
-                    title: Text("Select Theme"),
-                    value: Text(
+                    leading: const Icon(Icons.format_paint),
+                    title: const Text("Select Theme"),
+                    value: const Text(
                         "Choose between light and dark theme, or just let us handle it."),
                     onPressed: (context) => showDialog(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text("Choose a theme"),
-                            content: Text(
+                            title: const Text("Choose a theme"),
+                            content: const Text(
                                 "Choose between light, dark and system theme."),
                             actions: [
                               TextButton(
                                   onPressed: () async {
                                     await storage.write(
                                         key: "theme", value: "light");
-                                    // Change the active theme
+                                    Get.changeThemeMode(ThemeMode.light);
+                                    setState(() {});
                                     Navigator.pop(context);
                                   },
                                   child: Row(children: const [
@@ -87,6 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   onPressed: () async {
                                     await storage.write(
                                         key: "theme", value: "dark");
+                                    Get.changeThemeMode(ThemeMode.dark);
                                     setState(() {});
                                     Navigator.pop(context);
                                   },
@@ -99,6 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   onPressed: () async {
                                     await storage.write(
                                         key: "theme", value: "system");
+                                    Get.changeThemeMode(ThemeMode.system);
                                     setState(() {});
                                     Navigator.pop(context);
                                   },

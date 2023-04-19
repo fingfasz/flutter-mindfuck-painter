@@ -40,6 +40,7 @@ dependencies:
   flutter_colorpicker: ^1.0.3
   dynamic_color: ^1.6.3
   settings_ui: ^2.0.2
+  get: ^4.6.5
 
 
 dev_dependencies:
