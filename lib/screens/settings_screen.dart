@@ -7,6 +7,7 @@ import 'package:settings_ui/settings_ui.dart';
 
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
+ThemeMode? newThemeMode;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -47,9 +48,9 @@ class _SettingsPageState extends State<SettingsPage> {
           physics: const AlwaysScrollableScrollPhysics(),
           sections: [
             SettingsSection(
-              title: const Text("Main"),
+              title: const Text("Application"),
               tiles: <SettingsTile>[
-                SettingsTile.navigation(
+                SettingsTile(
                   leading: const Icon(Icons.language),
                   enabled: true,
                   title: const Text('Language'),
@@ -57,6 +58,58 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: (context) => showNoticeSnackbar(context,
                       "No other language are supported at the moment - sorry!"),
                 ),
+                SettingsTile(
+                    leading: Icon(Icons.format_paint),
+                    title: Text("Select Theme"),
+                    value: Text(
+                        "Choose between light and dark theme, or just let us handle it."),
+                    onPressed: (context) => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Choose a theme"),
+                            content: Text(
+                                "Choose between light, dark and system theme."),
+                            actions: [
+                              TextButton(
+                                  onPressed: () async {
+                                    await storage.write(
+                                        key: "theme", value: "light");
+                                    // Change the active theme
+                                    Navigator.pop(context);
+                                  },
+                                  child: Row(children: const [
+                                    Icon(Icons.light_mode),
+                                    SizedBox(width: 10),
+                                    Text("Light")
+                                  ])),
+                              TextButton(
+                                  onPressed: () async {
+                                    await storage.write(
+                                        key: "theme", value: "dark");
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                  child: Row(children: const [
+                                    Icon(Icons.dark_mode),
+                                    SizedBox(width: 10),
+                                    Text("Dark")
+                                  ])),
+                              TextButton(
+                                  onPressed: () async {
+                                    await storage.write(
+                                        key: "theme", value: "system");
+                                    setState(() {});
+                                    Navigator.pop(context);
+                                  },
+                                  child: Row(children: const [
+                                    Icon(Icons.android),
+                                    SizedBox(width: 10),
+                                    Text("System")
+                                  ])),
+                            ],
+                          );
+                        })),
               ],
             ),
             SettingsSection(title: const Text("Account"), tiles: <SettingsTile>[
