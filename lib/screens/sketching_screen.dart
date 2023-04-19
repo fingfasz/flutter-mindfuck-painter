@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_mindfuck_painter/widgets/expandable_fab_widget.dart';
 import 'package:scribble/scribble.dart';
-import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'package:flutter_mindfuck_painter/domain/services/api_service.dart';
-
-// Unsure if we need this tbh
-final storage = FlutterSecureStorage();
 
 class SketchingPage extends StatefulWidget {
+  const SketchingPage({super.key});
+
   @override
   State<SketchingPage> createState() => _SketchingPageState();
 }
@@ -21,6 +16,7 @@ class _SketchingPageState extends State<SketchingPage> {
   // Default to white
   Color backgroundColor = Colors.white;
   Color penColor = Colors.black;
+  bool isErasing = false;
   late double strokeWidth;
 
   @override
@@ -64,50 +60,8 @@ class _SketchingPageState extends State<SketchingPage> {
       ),
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        // title: Text(""),
         automaticallyImplyLeading: false,
         actions: [
-          // PopupMenuButton<int>(
-          //   onSelected: (item) => onSelected(context, item),
-          //   itemBuilder: (context) => [
-          //     PopupMenuItem<int>(
-          //       value: 0,
-          //       child: Row(
-          //         children: const [
-          //           Icon(
-          //             Icons.color_lens,
-          //           ),
-          //           SizedBox(width: 8),
-          //           Text('Change Color'),
-          //         ],
-          //       ),
-          //     ),
-          //     PopupMenuItem<int>(
-          //       value: 1,
-          //       child: Row(
-          //         children: const [
-          //           Icon(
-          //             Icons.drafts,
-          //           ),
-          //           SizedBox(width: 8),
-          //           Text('Change Background Color'),
-          //         ],
-          //       ),
-          //     ),
-          //     PopupMenuItem<int>(
-          //       value: 2,
-          //       child: Row(
-          //         children: const [
-          //           Icon(
-          //             Icons.draw,
-          //           ),
-          //           SizedBox(width: 8),
-          //           Text('Change Pen'),
-          //         ],
-          //       ),
-          //     ),
-          //   ],
-          // ),
           IconButton(
             icon: const Icon(Icons.send),
             tooltip: "Send your Sketch",
@@ -118,26 +72,12 @@ class _SketchingPageState extends State<SketchingPage> {
       body: SingleChildScrollView(
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.84,
-          // height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
               Scribble(
                 notifier: notifier,
                 drawPen: true,
               ),
-              // Positioned(
-              //   top: 16,
-              //   right: 16,
-              // child: Row(
-              //   children: [
-              //     _buildStrokeToolbar(context),
-              //     _buildColorToolbar(context),
-              //     const Divider(
-              //       height: 32,
-              //     ),
-              //   ],
-              //   ),
-              // )
             ],
           ),
         ),
@@ -145,8 +85,11 @@ class _SketchingPageState extends State<SketchingPage> {
     );
   }
 
+  // TODO: UI: Figure out how to add background
+  // TODO: UI: Send sketch to server
   Future<void> _saveImage(BuildContext context) async {
     final image = await notifier.renderImage();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -168,11 +111,29 @@ class _SketchingPageState extends State<SketchingPage> {
               child: BlockPicker(
                 pickerColor: penColor,
                 onColorChanged: (color) {
+                  isErasing = false;
                   penColor = color;
                 },
               ),
             ),
             actions: [
+              TextButton(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                          const CircleBorder(side: BorderSide.none)),
+                      iconColor: MaterialStatePropertyAll(
+                          Theme.of(context).colorScheme.tertiary)),
+                  child: const Icon(Icons.radio_button_checked),
+                  onPressed: () {
+                    //Eraser
+                    penColor = Colors.transparent;
+                    notifier.setEraser();
+                    isErasing = true;
+                    Navigator.pop(context, penColor);
+                  }),
+              Padding(
+                  padding: EdgeInsets.only(
+                      right: MediaQuery.of(context).size.width * 0.16)),
               TextButton(
                 child: const Text("Cancel"),
                 onPressed: () => Navigator.pop(context),
@@ -185,6 +146,10 @@ class _SketchingPageState extends State<SketchingPage> {
           ),
         );
         if (newColor != null) {
+          if (isErasing) {
+            notifier.setEraser();
+            return;
+          }
           notifier.setColor(newColor);
           penColor = newColor;
         }
