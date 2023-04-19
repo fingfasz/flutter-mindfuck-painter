@@ -20,6 +20,7 @@ void main() async {
       : readTheme == "light"
           ? ThemeMode.light
           : null;
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

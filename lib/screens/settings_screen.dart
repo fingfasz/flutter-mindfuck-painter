@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mindfuck_painter/domain/services/api_service_user.dart';
-import 'package:flutter_mindfuck_painter/domain/services/error_popup_handler_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:settings_ui/settings_ui.dart';
 import 'package:get/get.dart';
 
-import 'package:settings_ui/settings_ui.dart';
+import 'package:flutter_mindfuck_painter/domain/services/api_service_user.dart';
+import 'package:flutter_mindfuck_painter/domain/services/error_popup_handler_service.dart';
+import 'package:flutter_mindfuck_painter/domain/models/user_model.dart';
 
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
-ThemeMode? newThemeMode;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -18,24 +19,29 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String? username;
+  User? user;
+  ThemeMode? newThemeMode;
+  String? version;
 
-  Future<void> getUsername() async {
-    await storage
-        .read(key: "username")
-        .then((value) => username = value ?? "nobody");
-    setState(() {});
+  void initData() async {
+    await User.loadFromStorage()
+        .then((value) => user = value)
+        .whenComplete(() => setState(
+              () {},
+            ));
+    await PackageInfo.fromPlatform()
+        .then((value) =>
+            version = "${value.version} (build ${value.buildNumber})")
+        .whenComplete(() => setState(
+              () {},
+            ));
     return;
-  }
-
-  void initData() {
-    getUsername();
   }
 
   @override
   void initState() {
-    super.initState();
     initData();
+    super.initState();
   }
 
   @override
@@ -45,7 +51,6 @@ class _SettingsPageState extends State<SettingsPage> {
           title: const Text("Settings"),
         ),
         body: SettingsList(
-          platform: DevicePlatform.android,
           physics: const AlwaysScrollableScrollPhysics(),
           sections: [
             SettingsSection(
@@ -57,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   title: const Text('Language'),
                   value: const Text('English - only language supported'),
                   onPressed: (context) => showNoticeSnackbar(context,
-                      "No other language are supported at the moment - sorry!"),
+                      "No other languages are supported at the moment - sorry!"),
                 ),
                 SettingsTile(
                     leading: const Icon(Icons.format_paint),
@@ -118,13 +123,21 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
             SettingsSection(title: const Text("Account"), tiles: <SettingsTile>[
               SettingsTile(
-                leading: const Icon(Icons.logout),
+                leading: Icon(
+                    color: Theme.of(context).colorScheme.secondary,
+                    Icons.logout),
                 title: const Text("Log out"),
-                description: Text(username != null
-                    ? "Currently logged in as $username."
+                description: Text(user != null
+                    ? "Currently logged in as ${user!.username}."
                     : "Hang on..."),
                 onPressed: (context) => logout(context),
               ),
+              SettingsTile(
+                  title: Text(
+                      user != null
+                          ? "v$version \nYour UUID: ${user!.uuid}"
+                          : "Hold on...",
+                      style: Theme.of(context).textTheme.labelSmall))
             ])
           ],
         ));
