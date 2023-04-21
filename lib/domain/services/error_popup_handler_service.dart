@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
-Future showErrorSnackbar(BuildContext context, String message) async =>
+Future<void> showErrorSnackbar(
+        {required BuildContext context, required String message}) async =>
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        backgroundColor: Theme.of(context).colorScheme.error,
-        content: Text(message)));
+      backgroundColor: Theme.of(context).colorScheme.error,
+      content: Text(
+          style: TextStyle(color: Theme.of(context).colorScheme.onError),
+          message),
+    ));
 
-Future showNoticeSnackbar(BuildContext context, String message) async =>
+Future<void> showNoticeSnackbar(
+        {required BuildContext context, required String message}) async =>
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        content: Text(message)));
+        content: Text(
+            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
+            message)));

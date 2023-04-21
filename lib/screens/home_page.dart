@@ -3,6 +3,7 @@ import 'package:flutter_mindfuck_painter/domain/services/error_popup_handler_ser
 import 'package:flutter_mindfuck_painter/screens/settings_screen.dart';
 import 'package:flutter_mindfuck_painter/screens/sketching_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
 
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
@@ -89,10 +90,10 @@ class _HomePageState extends State<HomePage> {
   void onSelected(BuildContext context, int item) async {
     switch (item) {
       case 0:
-        showErrorSnackbar(context, "Not implemented yet!");
+        showErrorSnackbar(context: context, message: "Not implemented yet!");
         break;
       case 1:
-        showErrorSnackbar(context, "Not implemented yet!");
+        showErrorSnackbar(context: context, message: "Not implemented yet!");
         break;
       case 2:
         Navigator.of(context).push(

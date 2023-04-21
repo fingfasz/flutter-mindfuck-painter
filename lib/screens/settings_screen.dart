@@ -24,12 +24,12 @@ class _SettingsPageState extends State<SettingsPage> {
   String? version;
 
   void initData() async {
-    await User.loadFromStorage()
+    User.loadFromStorage()
         .then((value) => user = value)
         .whenComplete(() => setState(
               () {},
             ));
-    await PackageInfo.fromPlatform()
+    PackageInfo.fromPlatform()
         .then((value) =>
             version = "${value.version} (build ${value.buildNumber})")
         .whenComplete(() => setState(
@@ -61,8 +61,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   enabled: true,
                   title: const Text('Language'),
                   value: const Text('English - only language supported'),
-                  onPressed: (context) => showNoticeSnackbar(context,
-                      "No other languages are supported at the moment - sorry!"),
+                  onPressed: (context) => showNoticeSnackbar(
+                    context: context,
+                    message:
+                        "No other languages are supported at the moment - sorry!",
+                  ),
                 ),
                 SettingsTile(
                     leading: const Icon(Icons.format_paint),
@@ -75,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           return AlertDialog(
                             title: const Text("Choose a theme"),
                             content: const Text(
-                                "Choose between light, dark and system theme."),
+                                "You're either on the light, or the dark side. You can't be on both."),
                             actions: [
                               TextButton(
                                   onPressed: () async {
@@ -134,9 +137,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               SettingsTile(
                   title: Text(
-                      user != null
-                          ? "v$version \nYour UUID: ${user!.uuid}"
-                          : "Hold on...",
+                      user == null && version == null
+                          ? "Hang on..."
+                          : "v${version != null ? version! : 'Unknown'} \nYour UUID: ${user != null ? user!.uuid : 'Still loading...'}",
                       style: Theme.of(context).textTheme.labelSmall))
             ])
           ],

@@ -70,7 +70,8 @@ class _CreateAccountPage extends State<CreateAccountPage> {
                   if (a == 0) {
                     Navigator.pop(context);
                   } else {
-                    showErrorSnackbar(context, "Error: ${a.toString()}");
+                    showErrorSnackbar(
+                        context: context, message: "Error: ${a.toString()}");
                   }
                 },
                 child: const Text("Register"),

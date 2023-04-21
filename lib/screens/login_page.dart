@@ -71,7 +71,8 @@ class _LoginPageState extends State<LoginPage> {
                                 (route) => false);
                           } else {
                             showErrorSnackbar(
-                                context, "Error: ${a.toString()}");
+                                context: context,
+                                message: "Error: ${a.toString()}");
                           }
                           setState(() => _isButtonDisabled = false);
                         },

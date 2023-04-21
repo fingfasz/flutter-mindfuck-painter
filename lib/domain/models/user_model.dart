@@ -10,10 +10,13 @@ class User {
 
   static Future<User> loadFromStorage() async {
     User user = User(username: null, uuid: null);
+
     await storage
         .read(key: "username")
         .then((value) => user.username = value ?? "nobody");
-    await storage.read(key: "uuid").then((value) => user.uuid = value);
+    await storage
+        .read(key: "uuid")
+        .then((value) => user.uuid = value ?? "Unknown");
     return user;
   }
 }
