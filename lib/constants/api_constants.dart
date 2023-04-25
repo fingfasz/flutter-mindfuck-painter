@@ -1,6 +1,6 @@
 class ApiConstants {
   // Base URL stuffz
-  static String get _baseUrl => 'http://10.0.2.2:6000/api';
+  static String get _baseUrl => 'https://f6e5-195-199-217-115.eu.ngrok.io/api';
   static String get _usersUrl => '$_baseUrl/users';
   static String get _relationshipsUrl => '$_baseUrl/relationships';
   static String get _sketchesUrl => '$_baseUrl/sketches';
