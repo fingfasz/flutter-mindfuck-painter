@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -10,6 +12,8 @@ import 'package:flutter_mindfuck_painter/domain/models/user_model.dart';
 
 // ignore: prefer_const_constructors
 final storage = FlutterSecureStorage();
+
+bool developer = false;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -141,7 +145,20 @@ class _SettingsPageState extends State<SettingsPage> {
                           ? "Hang on..."
                           : "v${version != null ? version! : 'Unknown'} \nYour UUID: ${user != null ? user!.uuid : 'Still loading...'}",
                       style: Theme.of(context).textTheme.labelSmall))
-            ])
+            ]),
+            if (developer)
+              SettingsSection(
+                  title: const Text("Developer Settings"),
+                  tiles: <SettingsTile>[
+                    SettingsTile(
+                      leading: Icon(Icons.developer_mode),
+                      title: const Text("Test get username api"),
+                      onPressed: (context) async {
+                        var a = await getUserByUsername("flutter");
+                        log(a['uuid']);
+                      },
+                    )
+                  ]),
           ],
         ));
   }

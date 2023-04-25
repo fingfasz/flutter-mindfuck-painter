@@ -41,6 +41,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  byte_util:
+    dependency: "direct main"
+    description:
+      name: byte_util
+      sha256: "766790158b7352c3bc3cd2d1ad4f1f8d3b2952c243efd11ab44fd1c8fd9f17f2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   characters:
     dependency: transitive
     description:
@@ -292,10 +300,10 @@ packages:
     dependency: transitive
     description:
       name: image
-      sha256: "1f9ecf99b08c92dedb699de1d28549f5d79b4423b48cf3f95d6968156db5dd67"
+      sha256: "483a389d6ccb292b570c31b3a193779b1b0178e7eb571986d9a49904b6861227"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.12"
+    version: "4.0.15"
   js:
     dependency: transitive
     description:

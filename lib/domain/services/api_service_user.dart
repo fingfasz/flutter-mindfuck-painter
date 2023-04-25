@@ -111,7 +111,7 @@ Future getUserByUuid(String uuid) async {
     },
   );
 
-  return jsonDecode(res.body).user;
+  return await jsonDecode(res.body)['user'];
 }
 
 Future addUserAsFriend(String username) async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:flutter_mindfuck_painter/domain/services/api_service_sketchpage.dart';
+import 'package:flutter_mindfuck_painter/screens/home_page.dart';
 import 'package:flutter_mindfuck_painter/widgets/expandable_fab_widget.dart';
 import 'package:scribble/scribble.dart';
 
@@ -63,10 +65,20 @@ class _SketchingPageState extends State<SketchingPage> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.send),
-            tooltip: "Send your Sketch",
-            onPressed: () => _saveImage(context),
-          ),
+              icon: const Icon(Icons.send),
+              tooltip: "Send your Sketch",
+              onPressed: () async {
+                bool success =
+                    await renderImage(context, notifier, backgroundColor);
+                if (success) {
+                  Navigator.pop(context);
+                  await Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => HomePage()));
+                  setState(() {});
+                } else {
+                  return;
+                }
+              }),
         ],
       ),
       body: SingleChildScrollView(
@@ -81,20 +93,6 @@ class _SketchingPageState extends State<SketchingPage> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  // TODO: UI: Figure out how to add background
-  // TODO: UI: Send sketch to server
-  Future<void> _saveImage(BuildContext context) async {
-    final image = await notifier.renderImage();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Your Image"),
-        content: Image.memory(image.buffer.asUint8List()),
       ),
     );
   }

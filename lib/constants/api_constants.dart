@@ -47,4 +47,5 @@ class _SketchEndpoints {
   // Sketches URL Endpoints
   String get createSketchEndpoint => '${ApiConstants._sketchesUrl}/create';
   String get deleteSketchEndpoint => '${ApiConstants._sketchesUrl}/delete';
+  String get getSketchEndpoint => '${ApiConstants._sketchesUrl}/get';
 }
